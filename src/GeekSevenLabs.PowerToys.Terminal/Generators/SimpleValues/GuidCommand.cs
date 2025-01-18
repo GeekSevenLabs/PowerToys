@@ -6,7 +6,7 @@ internal static class GuidCommand
     
     public static async Task ExecuteAsync()
     {
-        Printer.Print("GUID", Toys.Generators.Values.GenerateGuid().ToString(), ConsoleColor.Green);
+        Printer.Print("GUID", Guid.NewGuid().ToString(), ConsoleColor.Green);
         await Task.CompletedTask;
     }
 }
