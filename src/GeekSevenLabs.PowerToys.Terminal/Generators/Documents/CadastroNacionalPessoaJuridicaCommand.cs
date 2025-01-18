@@ -1,4 +1,5 @@
 using Cocona;
+using GeekSevenLabs.PowerToys.Documents.Personal;
 
 namespace GeekSevenLabs.PowerToys.Terminal.Generators.Documents;
 
@@ -8,7 +9,7 @@ internal static class CadastroNacionalPessoaJuridicaCommand
     
     public static async Task ExecuteAsync(CadastroNacionalPessoaJuridicaArgs args)
     {
-        var cnpj = Toys.Generators.Documents.Brazilian.NationalRegistryLegalEntities.Generate(args.Formatted, args.UseLetters);
+        var cnpj = CadastroNacionalPessoaJuridicaDocument.Generate(args.Formatted, args.UseLetters);
         Printer.Print("CNPJ", cnpj, ConsoleColor.Green);
         await Task.CompletedTask;
     }

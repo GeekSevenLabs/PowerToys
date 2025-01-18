@@ -1,4 +1,5 @@
 using Cocona;
+using GeekSevenLabs.PowerToys.Documents.Personal;
 
 namespace GeekSevenLabs.PowerToys.Terminal.Generators.Documents;
 
@@ -8,7 +9,7 @@ internal static class CadastroPessoFisicaCommand
     
     public static async Task ExecuteAsync(CadastroPessoaFisicaArgs args)
     {
-        var cpf = Toys.Generators.Documents.Brazilian.IndividualRegistration.Generate(args.Region, args.Formatted);
+        var cpf = CadastroPessoaFisicaDocument.Generate(args.Region, args.Formatted);
         Printer.Print("CPF", cpf, ConsoleColor.Green);
         await Task.CompletedTask;
     }
