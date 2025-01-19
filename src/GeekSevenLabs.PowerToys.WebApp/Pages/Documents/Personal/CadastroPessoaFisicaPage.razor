@@ -1,0 +1,213 @@
+@page "/documents/personal/cpf"
+
+@using GeekSevenLabs.PowerToys.Documents.Personal
+
+@inject IClipboardService ClipboardService
+@inject ISnackbar Snackbar
+
+<Page Title="Cadastro de Pessoas Físicas">
+    <Content>
+
+        <MudTabs Elevation="2" Rounded ApplyEffectsToContainer="true" PanelClass="pa-6">
+            <MudTabPanel Text="Generator">
+
+                <MudStack Spacing="6">
+
+                    <MudStack Row Wrap="Wrap.Wrap" Spacing="6">
+                        <MudText>Options:</MudText>
+                        <MudCheckBox Label="With Mask" @bind-Value="WithMask"/>
+                    </MudStack>
+
+                    <MudStack Row Reverse Wrap="Wrap.Wrap">
+                        <MudButton
+                            Variant="Variant.Filled"
+                            Color="Color.Primary" OnClick="Generate">
+                            Generate
+                        </MudButton>
+
+                        <MudButton
+                            Variant="Variant.Filled"
+                            Color="Color.Primary" OnClick="GenerateAndCopy">
+                            Generate and copy
+                        </MudButton>
+
+                    </MudStack>
+
+                    <div>
+                        <MudDivider/>
+                    </div>
+
+                    <MudStack Justify="Justify.SpaceBetween" Row Wrap="Wrap.Wrap">
+
+                        <GslDataDisplay Title="CPF:">
+                            <MudText>@_cpf</MudText>
+                            <MudStack Row Spacing="2" Wrap="Wrap.NoWrap">
+                                @if (string.IsNullOrEmpty(_cpf))
+                                {
+                                    <MudText Color="Color.Default">No CPF generated</MudText>
+                                }
+                                else if (_cpf.Contains("."))
+                                {
+                                    <MudText Color="Color.Secondary">@_cpf[..10]</MudText>
+                                    <MudText Color="Color.Tertiary">@_cpf[10..11]</MudText>
+                                    <MudText Color="Color.Primary">@_cpf[11..14]</MudText>
+                                }
+                                else
+                                {
+                                    <MudText Color="Color.Secondary">@_cpf[..8]</MudText>
+                                    <MudText Color="Color.Tertiary">@_cpf[8..9]</MudText>
+                                    <MudText Color="Color.Primary">@_cpf[9..11]</MudText>
+                                }
+                            </MudStack>
+                        </GslDataDisplay>
+
+                        <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
+                            <MudButton
+                                Variant="Variant.Outlined"
+                                Color="Color.Primary"
+                                StartIcon="@Icons.Material.Filled.ContentCopy"
+                                OnClick="CopyAsync"
+                                Disabled="string.IsNullOrWhiteSpace(_cpf)">
+                                Copy
+                            </MudButton>
+                        </MudStack>
+
+                    </MudStack>
+
+                    <MudStack>
+                        <MudStack Row>
+                            <MudIcon Color="Color.Secondary" Icon="@Icons.Material.Filled.Square"/>
+                            <MudText>
+                                Números identificadores do contribuinte
+                            </MudText>
+                        </MudStack>
+                        <MudStack Row>
+                            <MudIcon Color="Color.Tertiary" Icon="@Icons.Material.Filled.Square"/>
+                            <MudText>
+                                Área fiscal de origem
+                            </MudText>
+                        </MudStack>
+                        <MudStack Row>
+                            <MudIcon Color="Color.Primary" Icon="@Icons.Material.Filled.Square"/>
+                            <MudText>
+                                Dígitos verificadores
+                            </MudText>
+                        </MudStack>
+                    </MudStack>
+
+
+                </MudStack>
+
+            </MudTabPanel>
+            <MudTabPanel Text="Validator" Disabled>
+                <MudText>Validator</MudText>
+            </MudTabPanel>
+        </MudTabs>
+
+        <MudStack>
+
+            <MudDivider/>
+
+            <MudStack>
+
+                <div class="tw|container tw|mx-auto tw|p-6 tw|space-y-6">
+                    <h2 class="tw|text-2xl tw|font-bold">O CPF (Cadastro de Pessoas Físicas)</h2>
+                    <p>
+                        O CPF (Cadastro de Pessoas Físicas) é um documento de identificação utilizado no Brasil para
+                        registrar os contribuintes no sistema tributário do país. Ele é emitido pela Receita Federal e
+                        tem como objetivo identificar, de forma única, os cidadãos que são sujeitos ao pagamento de
+                        tributos.
+                    </p>
+
+                    <h3 class="tw|text-xl tw|font-semibold">1. O que é o CPF?</h3>
+                    <p>
+                        O CPF é um número de 11 dígitos, utilizado para identificar pessoas físicas no Brasil. É
+                        necessário para diversas operações financeiras, fiscais e bancárias, como abertura de contas,
+                        declaração de imposto de renda e compras.
+                    </p>
+
+                    <h3 class="tw|text-xl tw|font-semibold">2. Para que serve o CPF?</h3>
+                    <ul class="tw|list-disc tw|pl-6 tw|space-y-2">
+                        <li>Identificar o contribuinte no sistema fiscal brasileiro;</li>
+                        <li>Realizar transações financeiras, como abertura de contas bancárias;</li>
+                        <li>Declarar imposto de renda;</li>
+                        <li>Controlar o pagamento de tributos e contribuições previdenciárias;</li>
+                        <li>Verificar a regularidade fiscal junto à Receita Federal.</li>
+                    </ul>
+
+                    <h3 class="tw|text-xl tw|font-semibold">3. Estrutura do CPF</h3>
+                    <p>
+                        O CPF possui 11 dígitos, organizados da seguinte forma:
+                    </p>
+                    <pre class="tw|p-4 tw|rounded-lg"><code>XXX.XXX.XXX-XX</code></pre>
+                    <ul class="tw|list-disc tw|pl-6 tw|space-y-2">
+                        <li><strong>Primeiros oito dígitos:</strong> Identificam o contribuinte de maneira única.</li>
+                        <li><strong>Nono dígito:</strong> Indica a área fiscal de origem do cidadão.</li>
+                        <li><strong>Dois dígitos verificadores:</strong> Validam a autenticidade do CPF através de
+                            cálculos matemáticos.
+                        </li>
+                    </ul>
+
+                    <h3 class="tw|text-xl tw|font-semibold">4. Recomendações de Uso</h3>
+                    <ul class="tw|list-disc tw|pl-6 tw|space-y-2">
+                        <li>Proteja seu CPF e evite compartilhá-lo com desconhecidos.</li>
+                        <li>Utilize o CPF apenas em situações necessárias, como impostos ou serviços bancários.</li>
+                        <li>Desconfie de solicitações não oficiais que pedem seu CPF.</li>
+                    </ul>
+
+                    <h3 class="tw|text-xl tw|font-semibold">5. Validação do CPF</h3>
+                    <p>
+                        A validação do CPF utiliza os dois dígitos verificadores, calculados a partir dos nove primeiros
+                        números. Esse processo é feito com algoritmos matemáticos que garantem a integridade do número.
+                    </p>
+
+                    <h3 class="tw|text-xl tw|font-semibold">6. Cálculo dos Dígitos Verificadores</h3>
+                    <p>
+                        O cálculo segue dois passos:
+                    </p>
+                    <ul class="tw|list-decimal tw|pl-6 tw|space-y-2">
+                        <li>Multiplica-se os nove primeiros números por pesos decrescentes e soma-se os resultados.</li>
+                        <li>Aplica-se o resto da divisão por 11 para determinar o dígito verificador, com ajustes para
+                            resultados menores que 2.
+                        </li>
+                        <li>Repete-se o processo, incluindo o primeiro dígito, para calcular o segundo dígito.</li>
+                    </ul>
+
+                    <p>
+                        Esses cálculos ajudam a prevenir fraudes e garantem que o número do CPF seja válido.
+                    </p>
+
+                    <h3 class="tw|text-xl tw|font-semibold">Conclusão</h3>
+                    <p>
+                        O CPF é um documento essencial para a identificação fiscal no Brasil. Sua estrutura única,
+                        validação matemática e uso responsável são fundamentais para garantir sua segurança e
+                        autenticidade.
+                    </p>
+                </div>
+
+            </MudStack>
+
+        </MudStack>
+    </Content>
+</Page>
+
+@code
+{
+    private string _cpf = string.Empty;
+
+    public bool WithMask { get; private set; } = true;
+
+    private void Generate() => _cpf = CadastroPessoaFisicaDocument.Generate(region: null, formatted: WithMask);
+
+    private async Task GenerateAndCopy()
+    {
+        Generate();
+        await CopyAsync();
+    }
+
+    private async Task CopyAsync()
+    {
+        await ClipboardService.WriteTextAsync(_cpf);
+        Snackbar.Add("CPF copied to clipboard", Severity.Success);
+    }
+}

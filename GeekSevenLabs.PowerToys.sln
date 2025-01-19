@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{AC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekSevenLabs.PowerToys", "src\GeekSevenLabs.PowerToys\GeekSevenLabs.PowerToys.csproj", "{7D37C501-7E84-48EB-A3FC-328DC1CA88C6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekSevenLabs.PowerToys.WebApp", "src\GeekSevenLabs.PowerToys.WebApp\GeekSevenLabs.PowerToys.WebApp.csproj", "{09513A51-59AD-485C-88C6-DD188704F645}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,6 +24,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{057DFE4D-6302-4BC1-9981-DEFC8B299408} = {3D3F4B22-5225-4FAD-A232-E06CDE7FB6A1}
 		{7D37C501-7E84-48EB-A3FC-328DC1CA88C6} = {AC10A056-46BF-4F8C-A085-7F1459119353}
+		{09513A51-59AD-485C-88C6-DD188704F645} = {3D3F4B22-5225-4FAD-A232-E06CDE7FB6A1}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{057DFE4D-6302-4BC1-9981-DEFC8B299408}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -32,5 +35,9 @@ Global
 		{7D37C501-7E84-48EB-A3FC-328DC1CA88C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D37C501-7E84-48EB-A3FC-328DC1CA88C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D37C501-7E84-48EB-A3FC-328DC1CA88C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09513A51-59AD-485C-88C6-DD188704F645}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09513A51-59AD-485C-88C6-DD188704F645}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09513A51-59AD-485C-88C6-DD188704F645}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09513A51-59AD-485C-88C6-DD188704F645}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

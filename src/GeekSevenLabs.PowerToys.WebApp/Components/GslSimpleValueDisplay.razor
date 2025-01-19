@@ -1,0 +1,33 @@
+@inject IClipboardService ClipboardService
+@inject ISnackbar Snackbar
+
+<MudStack Justify="Justify.SpaceBetween" Row Wrap="Wrap.Wrap">
+    
+    <GslDataDisplay Title="CPF:">@Value</GslDataDisplay>
+
+    <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
+        <MudButton
+            Variant="Variant.Outlined"
+            Color="Color.Primary"
+            StartIcon="@Icons.Material.Filled.ContentCopy"
+            OnClick="CopyAsync"
+            Disabled="string.IsNullOrWhiteSpace(Value)">
+            Copy
+        </MudButton>
+    </MudStack>
+</MudStack>
+
+@code 
+{
+    [Parameter, EditorRequired]
+    public required string Value { get; set; }
+    
+    [Parameter, EditorRequired]
+    public required string Label { get; set; }
+
+    private async Task CopyAsync()
+    {
+        await ClipboardService.WriteTextAsync(Value);
+        Snackbar.Add($"{Label} copied to clipboard", Severity.Success);
+    }
+}
