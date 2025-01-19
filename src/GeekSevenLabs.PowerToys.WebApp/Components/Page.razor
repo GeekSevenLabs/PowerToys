@@ -1,0 +1,40 @@
+@using MudBlazor.Utilities
+@inherits GslComponentBase
+
+<PageTitle>@Title | GSL - PowerToys </PageTitle>
+
+<GslContainer Class="@CssClass" Style="@Style" AdditionalAttributes="AdditionalAttributes" MaxWidth="MaxWidth">
+
+    <MudPaper>
+        <MudToolBar>
+            @if (!string.IsNullOrEmpty(BackHref))
+            {
+                <MudIconButton Icon="@Icons.Material.Outlined.ArrowBack" Color="Color.Inherit" Href="@BackHref"/>
+            }
+            <MudText Color="Color.Inherit">&ensp; @Title</MudText>
+            <MudSpacer/>
+            @Action
+        </MudToolBar>
+    </MudPaper>
+
+    <MudPaper Class="tw|py-6 tw|px-4">
+        @Content
+    </MudPaper>
+
+</GslContainer>
+
+@code
+{
+    private string CssClass => new CssBuilder("tw|py-6 tw|px-4")
+        .AddClass(Class)
+        .AddClass("tw|flex tw|flex-col tw|gap-6")
+        .ToString();
+
+    [Parameter, EditorRequired] public required string Title { get; set; }
+    [Parameter] public GslMaxWidth MaxWidth { get; set; } = GslMaxWidth.ExtraLarge;
+    [Parameter] public string BackHref { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired] public required RenderFragment Content { get; set; }
+    [Parameter] public RenderFragment? Action { get; set; }
+    [Parameter] public RenderFragment? BottomAction { get; set; }
+}

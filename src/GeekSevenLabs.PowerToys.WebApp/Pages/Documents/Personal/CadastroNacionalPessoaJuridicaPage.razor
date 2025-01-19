@@ -1,0 +1,221 @@
+@page "/documents/personal/cnpj"
+
+@using GeekSevenLabs.PowerToys.Documents.Personal
+
+@inject IClipboardService ClipboardService
+@inject ISnackbar Snackbar
+
+<Page Title="Cadastro Nacional de Pessoas Jurídicas">
+    <Content>
+
+        <MudTabs Elevation="2" Rounded ApplyEffectsToContainer="true" PanelClass="pa-6">
+            <MudTabPanel Text="Generator">
+
+                <MudStack Spacing="6">
+
+                    <MudStack Row Wrap="Wrap.Wrap" Spacing="6">
+                        <MudText>Options:</MudText>
+                        <MudCheckBox Label="With Mask" @bind-Value="WithMask"/>
+                        <MudCheckBox Label="With Letters" @bind-Value="WithLetters"/>
+                    </MudStack>
+
+                    <MudStack Row Reverse Wrap="Wrap.Wrap">
+                        <MudButton
+                            Variant="Variant.Filled"
+                            Color="Color.Primary" OnClick="Generate">
+                            Generate
+                        </MudButton>
+
+                        <MudButton
+                            Variant="Variant.Filled"
+                            Color="Color.Primary" OnClick="GenerateAndCopy">
+                            Generate and copy
+                        </MudButton>
+
+                    </MudStack>
+
+                    <div>
+                        <MudDivider/>
+                    </div>
+
+                    <MudStack Justify="Justify.SpaceBetween" Row Wrap="Wrap.Wrap">
+
+                        <GslDataDisplay Title="CNPJ:">
+                            <MudText>@_cnpj</MudText>
+                            <MudStack Row Spacing="2" Wrap="Wrap.NoWrap">
+                                @if (string.IsNullOrEmpty(_cnpj))
+                                {
+                                    <MudText Color="Color.Default">No CNPJ generated</MudText>
+                                }
+                                else if (_cnpj.Contains("."))
+                                {
+                                    <MudText Color="Color.Secondary">@_cnpj[..10]</MudText>
+                                    <MudText Color="Color.Tertiary">@_cnpj[10..15]</MudText>
+                                    <MudText Color="Color.Primary">@_cnpj[15..18]</MudText>
+                                }
+                                else
+                                {
+                                    <MudText Color="Color.Secondary">@_cnpj[..8]</MudText>
+                                    <MudText Color="Color.Tertiary">@_cnpj[8..12]</MudText>
+                                    <MudText Color="Color.Primary">@_cnpj[12..14]</MudText>
+                                }
+                            </MudStack>
+                        </GslDataDisplay>
+
+                        <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center">
+                            <MudButton
+                                Variant="Variant.Outlined"
+                                Color="Color.Primary"
+                                StartIcon="@Icons.Material.Filled.ContentCopy"
+                                OnClick="CopyAsync"
+                                Disabled="string.IsNullOrWhiteSpace(_cnpj)">
+                                Copy
+                            </MudButton>
+                        </MudStack>
+
+                    </MudStack>
+
+                    <MudStack>
+                        <MudStack Row>
+                            <MudIcon Color="Color.Secondary" Icon="@Icons.Material.Filled.Square"/>
+                            <MudText>
+                                Oito primeiros dígitos: Identificam a raiz da empresa, ou seja, o número principal associado à entidade.
+                            </MudText>
+                        </MudStack>
+                        <MudStack Row>
+                            <MudIcon Color="Color.Tertiary" Icon="@Icons.Material.Filled.Square"/>
+                            <MudText>
+                                Quatro dígitos seguintes (YYYY): Representam a unidade ou filial da empresa.
+                            </MudText>
+                        </MudStack>
+                        <MudStack Row>
+                            <MudIcon Color="Color.Primary" Icon="@Icons.Material.Filled.Square"/>
+                            <MudText>
+                                Dois dígitos finais (ZZ): São os dígitos verificadores, usados para validar o CNPJ.
+                            </MudText>
+                        </MudStack>
+                    </MudStack>
+
+
+                </MudStack>
+
+            </MudTabPanel>
+            <MudTabPanel Text="Validator" Disabled>
+                <MudText>Validator</MudText>
+            </MudTabPanel>
+        </MudTabs>
+
+        <MudStack>
+
+            <MudDivider/>
+
+            <MudStack>
+
+                <div class="tw|container tw|mx-auto tw|p-6 tw|space-y-6">
+                    <h2 class="tw|text-2xl tw|font-bold">O CNPJ (Cadastro Nacional da Pessoa Jurídica)</h2>
+                    <p>
+                        O CNPJ (Cadastro Nacional da Pessoa Jurídica) é um identificador emitido pela Receita Federal do
+                        Brasil para empresas e entidades, semelhante ao CPF para pessoas físicas. Ele é obrigatório para
+                        a realização de atividades empresariais, financeiras e fiscais no país.
+                    </p>
+
+                    <h3 class="tw|text-xl tw|font-semibold">1. O que é o CNPJ?</h3>
+                    <p>
+                        O CNPJ é um código alfanumérico utilizado para identificar de forma única as pessoas jurídicas
+                        no Brasil. Ele contém informações como data de abertura, nome empresarial, atividade econômica e
+                        endereço fiscal.
+                    </p>
+
+                    <h3 class="tw|text-xl tw|font-semibold">2. Para que serve o CNPJ?</h3>
+                    <ul class="tw|list-disc tw|pl-6 tw|space-y-2">
+                        <li>Identificar pessoas jurídicas no sistema fiscal brasileiro;</li>
+                        <li>Permitir a emissão de notas fiscais e recolhimento de tributos;</li>
+                        <li>Formalizar operações bancárias em nome da empresa;</li>
+                        <li>Registrar a empresa junto a órgãos públicos;</li>
+                        <li>Verificar a regularidade fiscal e jurídica da entidade.</li>
+                    </ul>
+
+                    <h3 class="tw|text-xl tw|font-semibold">3. Estrutura do CNPJ</h3>
+                    <p>
+                        O CNPJ é composto por 14 caracteres, que podem incluir números e letras. A estrutura é
+                        organizada da seguinte forma:
+                    </p>
+                    <pre class="tw|p-4 tw|rounded-lg"><code>XX.XXX.XXX/YYYY-ZZ</code></pre>
+                    <ul class="tw|list-disc tw|pl-6 tw|space-y-2">
+                        <li><strong>Oito primeiros dígitos:</strong> Identificam a raiz da empresa, ou seja, o número
+                            principal associado à entidade.
+                        </li>
+                        <li><strong>Quatro dígitos seguintes (YYYY):</strong> Representam a unidade ou filial da
+                            empresa.
+                        </li>
+                        <li><strong>Dois dígitos finais (ZZ):</strong> São os dígitos verificadores, usados para validar
+                            o CNPJ.
+                        </li>
+                    </ul>
+
+                    <h3 class="tw|text-xl tw|font-semibold">4. Recomendações de Uso</h3>
+                    <ul class="tw|list-disc tw|pl-6 tw|space-y-2">
+                        <li>Mantenha o CNPJ atualizado junto à Receita Federal;</li>
+                        <li>Evite compartilhar o CNPJ em situações não confiáveis;</li>
+                        <li>Utilize o CNPJ somente em transações oficiais e formais;</li>
+                        <li>Certifique-se de verificar a autenticidade de um CNPJ antes de realizar negócios.</li>
+                    </ul>
+
+                    <h3 class="tw|text-xl tw|font-semibold">5. Validação do CNPJ</h3>
+                    <p>
+                        A validação do CNPJ segue um algoritmo semelhante ao do CPF, utilizando os dois dígitos
+                        verificadores. Além disso, com a inclusão de letras, o processo de validação pode exigir
+                        verificações adicionais para garantir que o CNPJ esteja em conformidade com as normas da Receita
+                        Federal.
+                    </p>
+
+                    <h3 class="tw|text-xl tw|font-semibold">6. Cálculo dos Dígitos Verificadores</h3>
+                    <p>
+                        O cálculo dos dígitos verificadores é realizado em dois passos:
+                    </p>
+                    <ul class="tw|list-decimal tw|pl-6 tw|space-y-2">
+                        <li>Multiplica-se os 12 primeiros caracteres (números e letras convertidas, se necessário) por
+                            pesos pré-determinados e soma-se os resultados;
+                        </li>
+                        <li>Aplica-se o resto da divisão por 11 para obter o primeiro dígito verificador;</li>
+                        <li>Repete-se o processo para os 13 primeiros caracteres, incluindo o primeiro dígito
+                            verificador, para calcular o segundo dígito.
+                        </li>
+                    </ul>
+
+                    <h3 class="tw|text-xl tw|font-semibold">Conclusão</h3>
+                    <p>
+                        O CNPJ é essencial para o funcionamento das empresas no Brasil. A sua estrutura única, validação
+                        robusta e atualização contínua garantem que o documento seja uma ferramenta confiável para
+                        identificar e monitorar pessoas jurídicas.
+                    </p>
+                </div>
+
+
+            </MudStack>
+
+        </MudStack>
+    </Content>
+</Page>
+
+@code
+{
+    private string _cnpj = string.Empty;
+
+    public bool WithMask { get; private set; } = true;
+    public bool WithLetters { get; private set; }
+
+    private void Generate() => _cnpj = CadastroNacionalPessoaJuridicaDocument.Generate(formatted: WithMask, useLetters: WithLetters);
+
+    private async Task GenerateAndCopy()
+    {
+        Generate();
+        await CopyAsync();
+    }
+
+    private async Task CopyAsync()
+    {
+        await ClipboardService.WriteTextAsync(_cnpj);
+        Snackbar.Add("CNPJ copied to clipboard", Severity.Success);
+    }
+}
