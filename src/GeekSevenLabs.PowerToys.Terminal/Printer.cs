@@ -16,10 +16,12 @@ internal static class Printer
 
     public static void Print(string label, string message, ConsoleColor color = ConsoleColor.White)
     {
-        Console.WriteLine();
-        Console.Write($"\t{label.ToUpper()}: ");
+        Console.Write($"{label.ToUpper()}: ");
         Console.ForegroundColor = color;
         Console.WriteLine(message);
         Console.ResetColor();
     }
+    
+    
+    
 }
