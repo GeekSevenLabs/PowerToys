@@ -1,0 +1,128 @@
+@page "/youtube/downloads"
+
+@using GeekSevenLabs.PowerToys.YouTube
+
+@inject IClipboardService ClipboardService
+@inject ISnackbar Snackbar
+@inject YoutubeDownloader YoutubeService
+
+<Page Title="YouTube Downloader">
+    <Content>
+
+        <MudTabs Elevation="2" Rounded ApplyEffectsToContainer="true" PanelClass="pa-6">
+            <MudTabPanel Text="Downloader">
+
+                <MudStack Spacing="6">
+
+                    <MudStack Row Wrap="Wrap.Wrap" Spacing="6">
+                        <MudTextField @bind-Value="@_url" Label="URL"/>
+                        <MudButton 
+                            StartIcon="@Icons.Material.Filled.Search" 
+                            OnClick="FindAsync" Variant="Variant.Filled" Color="Color.Primary">
+                            GO
+                        </MudButton>
+                    </MudStack>
+
+                    
+                    
+                    <div>
+                        <MudDivider/>
+                    </div>
+
+                    <MudStack Justify="Justify.SpaceBetween" Row Wrap="Wrap.Wrap">
+
+                        @if (!string.IsNullOrEmpty(_errorText))
+                        {
+                            <MudAlert Severity="Severity.Error">@_errorText</MudAlert>
+                        }
+                        
+                        @if (_searching)
+                        {
+                            <MudProgressCircular Indeterminate="true"/>
+                        }
+                        
+                        @if (_media is not null)
+                        {
+                            <GslDataDisplay Title="Title">@_media.Title</GslDataDisplay>
+                            <GslDataDisplay Title="Author">@_media.Author</GslDataDisplay>
+                            <GslDataDisplay Title="Description">@_media.Description</GslDataDisplay>
+                            
+                            <div>
+                                <MudDivider/>
+                            </div>
+                            
+                            <MudText Typo="Typo.h5">Videos</MudText>
+                            
+                            @foreach (var video in _media.VideoStreams)
+                            {
+                                <MudStack Row Wrap="Wrap.Wrap" Spacing="6">
+                                    <MudText>@_media.Title | FORMAT: @video.Container | Quality: @video.VideoQuality | Size: @video.Size</MudText>
+                                    <MudButton 
+                                        StartIcon="@Icons.Material.Filled.Download" Href="@video.Url" Target="_blank"
+                                        Variant="Variant.Filled" Color="Color.Primary">
+                                        Download
+                                    </MudButton>
+                                </MudStack>
+                            }
+                            
+                            <MudText Typo="Typo.h5">Audios</MudText>
+                            
+                            @foreach (var audio in _media.AudioStreams)
+                            {
+                                <MudStack Row Wrap="Wrap.Wrap" Spacing="6">
+                                    <MudText>@_media.Title | FORMAT: @audio.Container | Bitrate: @audio.Bitrate | Size: @audio.Size</MudText>
+                                    <MudButton 
+                                        StartIcon="@Icons.Material.Filled.Download" Href="@audio.Url" Target="_blank"
+                                        Variant="Variant.Filled" Color="Color.Primary">
+                                        Download
+                                    </MudButton>
+                                </MudStack>
+                            }
+                        }
+
+                    </MudStack>
+
+
+                </MudStack>
+
+            </MudTabPanel>
+        </MudTabs>
+
+        <MudStack>
+
+            <MudDivider/>
+
+            <MudStack>
+
+            </MudStack>
+
+        </MudStack>
+    </Content>
+</Page>
+
+@code
+{
+    private string _url = string.Empty;
+    private bool _searching = false;
+    private string _errorText = string.Empty;
+
+    private YoutubeMedia? _media;
+
+    private async Task FindAsync()
+    {
+        try
+        {
+            _errorText = string.Empty;
+            _searching = true;
+            _media = await YoutubeService.GetMidiaAsync(_url);
+        }
+        catch(Exception ex)
+        {
+            _errorText = ex.Message;
+        }
+        finally
+        {
+            _searching = false;
+        }
+    }
+}
