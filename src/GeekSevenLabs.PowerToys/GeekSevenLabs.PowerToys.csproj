@@ -10,6 +10,7 @@
 
     <ItemGroup>
         <PackageReference Include="GeekSevenLabs.Utilities.Documents" Version="0.0.0-alpha8" />
+        <PackageReference Include="YoutubeExplode" Version="6.5.3" />
     </ItemGroup>
 
 </Project>

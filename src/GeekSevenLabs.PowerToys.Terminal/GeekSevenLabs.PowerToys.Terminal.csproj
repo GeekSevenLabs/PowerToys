@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+        <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
@@ -48,6 +48,7 @@
     <ItemGroup>
         <PackageReference Include="Cocona" Version="2.2.0"/>
         <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="9.0.1" />
+        <PackageReference Include="Sharprompt" Version="3.0.0" />
         <PackageReference Include="System.Text.Json" Version="9.0.1" />
     </ItemGroup>
 
