@@ -1,11 +1,14 @@
 namespace GeekSevenLabs.PowerToys.Terminal;
 
-public class ProgressBar
+public class ProgressBar : IDisposable
 {
     private static readonly Lock PadLock = new();
     
     public ProgressBar(string? label = null, ConsoleColor color = ConsoleColor.Yellow)
     {
+        Console.WriteLine();
+        Console.CursorVisible = false;
+        
         Line = Console.CursorTop;
         Label = label ?? "Progress";
         Color = color;
@@ -31,5 +34,13 @@ public class ProgressBar
     }
 
     private void StartLine() => Console.SetCursorPosition(0, Line);
-    private void ClearLine() => Console.Write(new string(' ', Console.WindowWidth));
+    private static void ClearLine() => Console.Write(new string(' ', Console.WindowWidth));
+
+    public void Dispose()
+    {
+        Console.WriteLine();
+        Console.WriteLine();
+        Console.CursorVisible = true;
+        GC.SuppressFinalize(this);
+    }
 }
